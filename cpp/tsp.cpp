@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 
     // Generate data
     std::vector<City> cities;
-    GenerateRandomCities(12, cities);
-    //GenerateGridCities(4, 3, cities);
+    GenerateCitiesRandom(12, cities);
+    //GenerateCitiesGrid(4, 3, cities);
 
     printf("unsorted dist      = %f\n", TSPSolverSimple(cities));
     printf("simple solver dist = %f\n", TSPSolverSimpleSorted(cities));
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 }
 
 
-void GenerateRandomCities(const uint32_t numCities, std::vector<City>& citiesVec)
+void GenerateCitiesRandom(const uint32_t numCities, std::vector<City>& citiesVec)
 {
     citiesVec.clear();
     citiesVec.reserve(numCities);
@@ -38,7 +38,7 @@ void GenerateRandomCities(const uint32_t numCities, std::vector<City>& citiesVec
     }
 }
 
-void GenerateGridCities(const uint8_t width, const uint8_t height, std::vector<City>& citiesVec)
+void GenerateCitiesGrid(const uint8_t width, const uint8_t height, std::vector<City>& citiesVec)
 {
     citiesVec.clear();
     citiesVec.reserve(width * height);
@@ -122,7 +122,7 @@ void SortLargestCoordinate(std::vector<City>& citiesVec)
     });
 }
 
-void PrintListCities(const std::vector<City>& citiesVec, bool withDist)
+void PrintCitiesList(const std::vector<City>& citiesVec, bool withDist)
 {
     for (int i = 0; i < citiesVec.size(); i++) {
         if (withDist && i > 0) {
@@ -132,7 +132,7 @@ void PrintListCities(const std::vector<City>& citiesVec, bool withDist)
     }
 }
 
-void PrintGridCities(const std::vector<City>& citiesVec)
+void PrintCitiesGrid(const std::vector<City>& citiesVec)
 {
     std::vector<int32_t> xCoords;
     std::vector<int32_t> yCoords;

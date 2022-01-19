@@ -100,8 +100,8 @@ public:
     }
 };
 
-void GenerateRandomCities(const uint32_t numCities, std::vector<City>& citiesVec);
-void GenerateGridCities(const uint8_t width, const uint8_t height, std::vector<City>& citiesVec);
+void GenerateCitiesRandom(const uint32_t numCities, std::vector<City>& citiesVec);
+void GenerateCitiesGrid(const uint8_t width, const uint8_t height, std::vector<City>& citiesVec);
 
 void SetFirstClosestToOrigin(std::vector<City>& citiesVec);
 
@@ -111,7 +111,7 @@ void SortClosestToOrigin(std::vector<City>& citiesVec);
 void SortSmallestGeometricMeanCoordinates(std::vector<City>& citiesVec);
 void SortLargestCoordinate(std::vector<City>& citiesVec);
 
-void PrintListCities(const std::vector<City>& citiesVec, bool withDist = false);
-void PrintGridCities(const std::vector<City>& citiesVec);
+void PrintCitiesList(const std::vector<City>& citiesVec, bool withDist = false);
+void PrintCitiesGrid(const std::vector<City>& citiesVec);
 
 #endif // TSP_H
