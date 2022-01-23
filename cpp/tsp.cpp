@@ -11,20 +11,26 @@
 int main(int argc, char *argv[])
 {
     // Initialize RNG
-    const uint32_t nTime = time(nullptr);
+    const int64_t nTime = time(nullptr);
     srand(nTime);
     //srand(1642255937);
-    printf("nTime = %u\n", nTime);
+    printf("nTime = %lu\n", nTime);
 
     // Generate data
     std::vector<City> cities;
-    GenerateCitiesRandom(12, cities);
-    //GenerateCitiesGrid(4, 3, cities);
+    //GenerateCitiesRandom(12, cities, 20);
+    GenerateCitiesGrid(4, 3, cities);
 
     printf("unsorted dist      = %f\n", TSPSolverSimple(cities));
     printf("simple solver dist = %f\n", TSPSolverSimpleSorted(cities));
     printf("greedy solver dist = %f\n", TSPSolverGreedySorted(cities));
+    const int64_t startTime = time(nullptr);
     printf("brute force dist   = %f\n", TSPSolverBruteForceSorted(cities));
+    const int64_t endTime = time(nullptr);
+    printf("brute force time = %lu\n", time(nullptr) - startTime);
+    printf("grid solver dist   = %f\n", FullGridSolverSorted(cities, City(1, 1), City(1, 2)));
+    PrintCitiesList(cities);
+    PrintCitiesGrid(cities);
 }
 
 
