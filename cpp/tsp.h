@@ -100,7 +100,7 @@ public:
     }
 };
 
-void GenerateCitiesRandom(const uint32_t numCities, std::vector<City>& citiesVec);
+void GenerateCitiesRandom(const uint32_t numCities, std::vector<City>& citiesVec, const uint8_t maxCoord = 255);
 void GenerateCitiesGrid(const uint8_t width, const uint8_t height, std::vector<City>& citiesVec);
 
 void SetFirstClosestToOrigin(std::vector<City>& citiesVec);

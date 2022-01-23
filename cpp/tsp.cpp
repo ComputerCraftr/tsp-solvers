@@ -28,13 +28,13 @@ int main(int argc, char *argv[])
 }
 
 
-void GenerateCitiesRandom(const uint32_t numCities, std::vector<City>& citiesVec)
+void GenerateCitiesRandom(const uint32_t numCities, std::vector<City>& citiesVec, const uint8_t maxCoord)
 {
     citiesVec.clear();
     citiesVec.reserve(numCities);
 
     for (int i = 0; i < numCities; i++) {
-        citiesVec.emplace_back(rand() % 255 + 1, rand() % 255 + 1); // random coordinates from 1 to 255
+        citiesVec.emplace_back(rand() % maxCoord + 1, rand() % maxCoord + 1); // random coordinates from 1 to 255
     }
 }
 
