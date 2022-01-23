@@ -30,4 +30,6 @@ double TSPSolverGreedySorted(std::vector<City>& citiesVec);
 // Brute force O(n!) TSP solver
 double TSPSolverBruteForceSorted(std::vector<City>& citiesVec);
 
+double FullGridSolverSorted(std::vector<City>& citiesVec, const City& entrancePoint, const City& exitPoint);
+
 #endif // SOLVERS_H

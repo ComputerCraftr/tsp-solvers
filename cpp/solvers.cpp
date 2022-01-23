@@ -78,3 +78,79 @@ double TSPSolverBruteForceSorted(std::vector<City>& citiesVec)
     citiesVec = bestPath;
     return minDist;
 }
+
+double EvenFullGridSolverSorted(std::vector<City>& citiesVec, const City& entrancePoint, const City& exitPoint)
+{
+    int32_t xSmallest = std::numeric_limits<int32_t>::max();
+    int32_t xLargest = 0;
+    int32_t ySmallest = std::numeric_limits<int32_t>::max();
+    int32_t yLargest = 0;
+
+    int entranceIndex = -1;
+    int exitIndex = -1;
+    for (int i = 0; i < citiesVec.size(); i++) {
+        xSmallest = std::min(xSmallest, citiesVec[i].GetX());
+        xLargest = std::max(xLargest, citiesVec[i].GetX());
+
+        ySmallest = std::min(ySmallest, citiesVec[i].GetY());
+        yLargest = std::max(yLargest, citiesVec[i].GetY());
+
+        if (entranceIndex == -1 && citiesVec[i] == entrancePoint) {
+            entranceIndex = i;
+        } else if (exitIndex == -1 && citiesVec[i] == exitPoint) {
+            exitIndex = i;
+        }
+    }
+
+    if (entranceIndex != -1 && exitIndex != -1 && entranceIndex != exitIndex &&
+        (entrancePoint.GetX() == xSmallest || entrancePoint.GetX() == xLargest || // Ensure entrance and exit points are on the outside of the grid
+         entrancePoint.GetY() == ySmallest /*|| entrancePoint.GetY() == yLargest*/) &&
+        (exitPoint.GetX() == xSmallest || exitPoint.GetX() == xLargest ||
+         exitPoint.GetY() == ySmallest /*|| exitPoint.GetY() == yLargest*/) &&
+        entrancePoint.DistTo(exitPoint) == 1) {
+        std::iter_swap(citiesVec.begin(), citiesVec.begin() + entranceIndex); // Set entrance point
+        if (exitIndex == 0) {
+            exitIndex = entranceIndex; // Update with new index if first element is swapped
+        }
+        std::iter_swap(citiesVec.end() - 1, citiesVec.begin() + exitIndex); // Set exit point
+    } else {
+        return std::numeric_limits<int32_t>::max();
+    }
+
+    const int32_t width = xLargest - xSmallest;
+    const int32_t height = yLargest - ySmallest;
+    int32_t xOffset = entrancePoint.GetX() - xSmallest; // Even go down, odd go up
+    int32_t yOffset = entrancePoint.GetY() - ySmallest; // Zero goes right
+    //int32_t totalDist = 1; // The entrance city is skipped because it has already been set at the beginning of the vector
+
+    const int32_t lastCity = citiesVec.size() - 1;
+    for (int i = 1; i < lastCity; i++) {
+        if (yOffset == 0 && xOffset < width) { // Bottom of grid
+            xOffset++;
+        } else if ((xOffset == width || (xOffset & 1)) && yOffset < height) { // Right side, going up
+            yOffset++;
+        } else if ((yOffset == height && (xOffset & 1)) || (yOffset == 1 && !(xOffset & 1))) { // Top of grid or row above bottom
+            xOffset--;
+        } else if (!(xOffset & 1) && yOffset > 1) { // Going down
+            yOffset--;
+        }
+        citiesVec[i] = City(xSmallest + xOffset, ySmallest + yOffset);
+        //totalDist++;
+    }
+
+    const int32_t totalDist = lastCity; // Distance traveled in a full grid is equal to number of points minus one (the distance between entrance and exit points)
+
+    return totalDist;
+}
+
+// Simple O(n) solver which can find an optimal path through a grid of cities
+double FullGridSolverSorted(std::vector<City>& citiesVec, const City& entrancePoint, const City& exitPoint)
+{
+    if (citiesVec.size() & 1) { // Odd number of cities
+        return 0;
+    } else {
+        const int32_t distFromExit = 1; // When entrance and exit are adjacent the return trip is 1 tile
+
+        return EvenFullGridSolverSorted(citiesVec, entrancePoint, exitPoint) + distFromExit;
+    }
+}
